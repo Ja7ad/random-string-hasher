@@ -8,13 +8,14 @@ import (
 
 const (
 	letterBytes   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	letterIdxBits = 6
 	letterIdxMask = 1<<letterIdxBits - 1
+	letterIdxBits = 6
 	letterIdxMax  = 63 / letterIdxBits
 )
 
 var src = rand.NewSource(time.Now().UnixNano())
 
+// randomString create random string with fixed letters size
 func randomString(n int) string {
 	b := make([]byte, n)
 	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
@@ -22,7 +23,7 @@ func randomString(n int) string {
 			cache, remain = src.Int63(), letterIdxMax
 		}
 
-		if idx := int(cache & letterIdxMax); idx < len(letterBytes) {
+		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
 			b[i] = letterBytes[idx]
 			i--
 		}
