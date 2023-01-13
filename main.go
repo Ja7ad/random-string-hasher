@@ -57,6 +57,11 @@ func hasThreeZeroInHash(hash <-chan hash) (bool, <-chan string) {
 }
 
 func sortingAndAppendHashToSlice(h <-chan string) {
+	if len(hashList) == 0 {
+		hashList = append(hashList, <-h)
+		return
+	}
+
 	hashList = append(hashList, <-h)
 	nums := make([]int, 0)
 
