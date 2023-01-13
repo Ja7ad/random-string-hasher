@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_hashString(t *testing.T) {
 	tests := []struct {
@@ -30,8 +32,8 @@ func Test_hashString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.word, func(t *testing.T) {
-			if got := hashString(tt.word); got != tt.want {
-				t.Errorf("hashString() = %v, want %v", got, tt.want)
+			if got := newHash(tt.word); got.String() != tt.want {
+				t.Errorf("newHash() = %v, want %v", got, tt.want)
 			}
 		})
 	}
