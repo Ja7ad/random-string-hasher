@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"sync"
 	"time"
 )
 
@@ -58,20 +57,14 @@ func hasThreeZeroInHash(hash <-chan hash) (bool, <-chan string) {
 }
 
 func sortingAndAppendHashToSlice(h <-chan string) {
-	var wg sync.WaitGroup
-
 	hashList = append(hashList, <-h)
 	nums := make([]int, 0)
 
-	wg.Add(1)
-	go func() {
-		for _, s := range hashList {
-			nums = append(nums, <-calcSumHash(s))
-		}
-	}()
+	for _, s := range hashList {
+		nums = append(nums, <-calcSumHash(s))
+	}
 
-	go func(nums []int, w *sync.WaitGroup) {
-		defer wg.Done()
+	go func(nums []int) {
 		n := len(hashList)
 		for i := 0; i < i-1; i++ {
 			for j := 0; j < n-i-1; j++ {
@@ -81,9 +74,7 @@ func sortingAndAppendHashToSlice(h <-chan string) {
 				}
 			}
 		}
-	}(nums, &wg)
-
-	wg.Wait()
+	}(nums)
 }
 
 func calcSumHash(h string) <-chan int {
