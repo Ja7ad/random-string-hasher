@@ -63,23 +63,23 @@ func sortingAndAppendHashToSlice(h <-chan string) {
 	}
 
 	hashList = append(hashList, <-h)
-	nums := make([]int, 0)
+	sums := make([]int, 0)
 
 	for _, s := range hashList {
-		nums = append(nums, <-calcSumHash(s))
+		sums = append(sums, <-calcSumHash(s))
 	}
 
-	go func(nums []int) {
+	go func(sums []int) {
 		n := len(hashList)
 		for i := 0; i < i-1; i++ {
 			for j := 0; j < n-i-1; j++ {
-				if nums[j] < nums[j+1] {
-					nums[j], nums[j+1] = nums[j+1], nums[j]
+				if sums[j] < sums[j+1] {
+					sums[j], sums[j+1] = sums[j+1], sums[j]
 					hashList[j], hashList[j+1] = hashList[j+1], hashList[j]
 				}
 			}
 		}
-	}(nums)
+	}(sums)
 }
 
 func calcSumHash(h string) <-chan int {
